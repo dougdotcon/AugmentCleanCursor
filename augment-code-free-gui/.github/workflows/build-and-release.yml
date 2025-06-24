@@ -1,0 +1,217 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      pre_release:
+        description: 'Mark as pre-release'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            platform: windows
+            executable_ext: .exe
+            shell: powershell
+          - os: macos-latest
+            platform: macos
+            executable_ext: ""
+            shell: bash
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install UPX (Windows)
+      if: matrix.platform == 'windows'
+      run: |
+          choco install upx -y
+      shell: cmd
+
+    - name: Install UPX (macOS)
+      if: matrix.platform == 'macos'
+      run: |
+        brew install upx
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+
+    - name: Install dependencies
+      run: |
+        uv sync --index-url https://pypi.org/simple/ || uv sync --index-url https://pypi.douban.com/simple/
+
+    - name: Install PyInstaller
+      run: |
+        uv pip install pyinstaller --index-url https://pypi.org/simple/ || uv pip install pyinstaller --index-url https://pypi.douban.com/simple/
+
+    - name: Build application (Windows)
+      if: matrix.platform == 'windows'
+      run: |
+        # Set UTF-8 encoding for Windows console
+        $env:PYTHONIOENCODING = "utf-8"
+        uv run python scripts/build.py
+      shell: powershell
+
+    - name: Build application (macOS)
+      if: matrix.platform == 'macos'
+      run: |
+        export PYTHONIOENCODING=utf-8
+        uv run python scripts/build.py
+      shell: bash
+
+    - name: Get version from pyproject.toml (Windows)
+      if: matrix.platform == 'windows'
+      id: get_version_windows
+      run: |
+        $version = (Select-String -Path "pyproject.toml" -Pattern 'version = "(.+)"').Matches[0].Groups[1].Value
+        echo "version=$version" >> $env:GITHUB_OUTPUT
+        echo "Current version: $version"
+      shell: powershell
+
+    - name: Get version from pyproject.toml (macOS)
+      if: matrix.platform == 'macos'
+      id: get_version_macos
+      run: |
+        version=$(grep 'version = ' pyproject.toml | sed 's/.*version = "\(.*\)".*/\1/')
+        echo "version=$version" >> $GITHUB_OUTPUT
+        echo "Current version: $version"
+      shell: bash
+
+    - name: Set version output
+      id: get_version
+      run: |
+        if [ "${{ matrix.platform }}" = "windows" ]; then
+          echo "version=${{ steps.get_version_windows.outputs.version }}" >> $GITHUB_OUTPUT
+        else
+          echo "version=${{ steps.get_version_macos.outputs.version }}" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
+
+    - name: Check if release folder exists (Windows)
+      if: matrix.platform == 'windows'
+      run: |
+        if (Test-Path "release") {
+          echo "Release folder exists"
+          Get-ChildItem release -Name
+        } else {
+          echo "Release folder not found"
+          exit 1
+        }
+      shell: powershell
+
+    - name: Check if release folder exists (macOS)
+      if: matrix.platform == 'macos'
+      run: |
+        if [ -d "release" ]; then
+          echo "Release folder exists"
+          ls -la release/
+        else
+          echo "Release folder not found"
+          exit 1
+        fi
+      shell: bash
+
+    - name: Find versioned executable (Windows)
+      if: matrix.platform == 'windows'
+      id: find_versioned_windows
+      run: |
+        $versionedFile = Get-ChildItem release -Filter "AugmentFree_v${{ steps.get_version.outputs.version }}_*.exe" | Select-Object -First 1
+        if ($versionedFile) {
+          echo "versioned_file=$($versionedFile.FullName)" >> $env:GITHUB_OUTPUT
+          echo "Found versioned file: $($versionedFile.Name)"
+        } else {
+          echo "No versioned file found"
+          exit 1
+        }
+      shell: powershell
+
+    - name: Find versioned executable (macOS)
+      if: matrix.platform == 'macos'
+      id: find_versioned_macos
+      run: |
+        versioned_file=$(find release -name "AugmentFree_v${{ steps.get_version.outputs.version }}_*" -type f | head -1)
+        if [ -n "$versioned_file" ]; then
+          echo "versioned_file=$versioned_file" >> $GITHUB_OUTPUT
+          echo "Found versioned file: $(basename $versioned_file)"
+        else
+          echo "No versioned file found"
+          exit 1
+        fi
+      shell: bash
+
+    - name: Set versioned file output
+      id: find_versioned
+      run: |
+        if [ "${{ matrix.platform }}" = "windows" ]; then
+          echo "versioned_file=${{ steps.find_versioned_windows.outputs.versioned_file }}" >> $GITHUB_OUTPUT
+        else
+          echo "versioned_file=${{ steps.find_versioned_macos.outputs.versioned_file }}" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: AugmentFree-${{ matrix.platform }}-v${{ steps.get_version.outputs.version }}
+        path: ${{ steps.find_versioned.outputs.versioned_file }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Get version from pyproject.toml
+      id: get_version
+      run: |
+        version=$(grep 'version = ' pyproject.toml | sed 's/.*version = "\(.*\)".*/\1/')
+        echo "version=$version" >> $GITHUB_OUTPUT
+        echo "Current version: $version"
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts/
+
+    - name: List artifacts
+      run: |
+        find artifacts/ -type f -name "*" | sort
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v${{ steps.get_version.outputs.version }}
+        name: Free AugmentCode v${{ steps.get_version.outputs.version }}
+        body: ""
+        draft: false
+        prerelease: ${{ github.event.inputs.pre_release }}
+        files: artifacts/**/*
+        token: ${{ secrets.GITHUB_TOKEN }}

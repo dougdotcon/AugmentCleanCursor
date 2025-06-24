@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Augment-Code-Free</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="./app.ico">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>⚙ Augment-Code-Free</h1>
+                    <p class="subtitle">Ferramenta simples para redefinir dados do plugin Augment</p>
+                </div>
+                <div class="header-right">
+                    <div class="status-indicator">
+                        <span class="status-label">Status:</span>
+                        <span class="status-value" id="apiStatus">Verificando...</span>
+                    </div>
+                    <div class="editor-selector">
+                        <span class="editor-label">🎯 Editor:</span>
+                        <select class="editor-select" id="editorSelect" onchange="changeEditor()">
+                            <option value="VSCodium">🔷 VSCodium</option>
+                            <option value="Code">💙 VS Code</option>
+                        </select>
+                        <button class="detect-btn" id="detectBtn" onclick="detectIDEs()" title="Detectar IDEs automaticamente">
+                            🔍
+                        </button>
+                        <span class="detect-status" id="detectStatus"></span>
+                    </div>
+                    <button class="about-btn" onclick="showAboutModal()" title="Sobre">
+                        ℹ️
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Combined Panel - System Info & Operations -->
+            <div class="combined-panel">
+                <div class="panel-card">
+                    <div class="combined-content">
+                        <!-- Left Section - System Info -->
+                        <div class="system-section">
+                            <div class="section-header">
+                                <h2>📁 Informações do Sistema</h2>
+                                <button class="refresh-btn" onclick="loadSystemInfo()" title="Atualizar informações">
+                                    🔄
+                                </button>
+                            </div>
+                            <div class="system-info-compact" id="systemInfo">
+                                <div class="loading">Carregando informações do sistema...</div>
+                            </div>
+                        </div>
+
+                        <!-- Right Section - Operations -->
+                        <div class="operations-section">
+                            <div class="section-header">
+                                <h2>🛠️ Operações de Limpeza</h2>
+                            </div>
+                            <div class="operations-compact">
+                                <!-- Individual Operations -->
+                                <div class="operations-grid-compact">
+                                    <div class="operation-item-compact">
+                                        <div class="operation-icon">🔑</div>
+                                        <div class="operation-content">
+                                            <h3>Redefinir Código da Máquina</h3>
+                                            <p>Redefine Device ID e Machine ID, gerando novos identificadores aleatórios</p>
+                                        </div>
+                                        <button class="operation-btn btn-primary" onclick="modifyTelemetry()" id="telemetryBtn">
+                                            Redefinir Código da Máquina
+                                        </button>
+                                    </div>
+
+                                    <div class="operation-item-compact">
+                                        <div class="operation-icon">🗃️</div>
+                                        <div class="operation-content">
+                                            <h3>Limpar Banco de Dados</h3>
+                                            <p>Remove registros contendo 'augment' do banco de dados SQLite</p>
+                                        </div>
+                                        <button class="operation-btn btn-primary" onclick="cleanDatabase()" id="databaseBtn">
+                                            Limpar Banco de Dados
+                                        </button>
+                                    </div>
+
+                                    <div class="operation-item-compact">
+                                        <div class="operation-icon">💾</div>
+                                        <div class="operation-content">
+                                            <h3>Limpar Workspace</h3>
+                                            <p>Remove arquivos e diretórios de armazenamento do workspace</p>
+                                        </div>
+                                        <button class="operation-btn btn-primary" onclick="cleanWorkspace()" id="workspaceBtn">
+                                            Limpar Workspace
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Action -->
+                                <div class="quick-action-compact">
+                                    <div class="quick-action-content">
+                                        <div class="quick-action-icon">🚀</div>
+                                        <div class="quick-action-text">
+                                            <h3>Limpeza Completa</h3>
+                                            <p>Executa todas as operações de limpeza (recomendado)</p>
+                                        </div>
+                                    </div>
+                                    <button class="quick-action-btn" onclick="runAllOperations()" id="allBtn">
+                                        Executar Agora
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Results Panel -->
+        <div class="results-panel" id="resultsPanel" style="display: none;">
+            <div class="panel-card">
+                <div class="panel-header">
+                    <h2>📊 Resultados das Operações</h2>
+                    <button class="close-btn" onclick="document.getElementById('resultsPanel').style.display='none'">
+                        ✕
+                    </button>
+                </div>
+                <div class="results-content" id="resultsContent">
+                    <!-- Results will be displayed here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-warning">
+                    <div class="footer-icon">⚠️</div>
+                    <div class="footer-text">
+                        <p>Certifique-se de sair do <span id="footerEditorName1">VS Code</span> e do plugin AugmentCode antes de usar</p>
+                    </div>
+                </div>
+                <div class="footer-tip">
+                    <div class="footer-icon">💡</div>
+                    <div class="footer-text">
+                        <p>Após as operações, reinicie o <span id="footerEditorName2">VS Code</span> e faça login no AugmentCode com um novo email</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal-overlay" id="aboutModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🐱 Sobre o Free AugmentCode</h2>
+                <button class="modal-close" onclick="hideAboutModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="about-info">
+                    <div class="about-section">
+                        <h3>📋 Informações do Projeto</h3>
+                        <p><strong>Versão:</strong> <span id="appVersion">v0.1.0</span></p>
+                        <p><strong>Autor:</strong> vagmr</p>
+                        <p><strong>Descrição:</strong> Ferramenta GUI moderna para limpar dados relacionados ao AugmentCode</p>
+                    </div>
+
+                    <div class="about-section">
+                        <h3>🔗 Links Relacionados</h3>
+                        <div class="link-buttons">
+                            <button class="link-btn" onclick="openGitHubRepo()">
+                                📂 Repositório GitHub
+                            </button>
+                            <button class="link-btn" onclick="openGitHubReleases()">
+                                📦 Baixar Versão Mais Recente
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="about-section">
+                        <h3>⚠️ Aviso Legal</h3>
+                        <p><strong>Uso por Conta e Risco:</strong> Esta ferramenta é fornecida apenas para fins educacionais e de pesquisa. O usuário assume total responsabilidade pelos riscos de uso.</p>
+                        <p><strong>Segurança de Dados:</strong> Certifique-se de fazer backup de dados importantes antes de usar. O autor não se responsabiliza por qualquer perda de dados.</p>
+                        <p><strong>Uso Conforme:</strong> Observe os termos de uso do software relevante e as leis locais.</p>
+                        <p><strong>Sem Garantias:</strong> Este software é fornecido "como está", sem qualquer garantia explícita ou implícita.</p>
+                        <p><strong>Uso Comercial:</strong> Este projeto usa a licença MIT de código aberto. Todas as vendas comerciais são independentes do autor.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p id="loadingText">Processando...</p>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
