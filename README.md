@@ -1,4 +1,4 @@
-# 🚀 AugmentCleanCursor - Coleção de Ferramentas
+# 🚀 AugmentCleanCursor - Tool Collection
 
 <div align="center">
 
@@ -6,148 +6,88 @@
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=for-the-badge)
 
-**Coleção completa de ferramentas para gerenciamento e limpeza de dados do AugmentCode**
+**A complete toolkit for managing and cleaning AugmentCode data**
 
 </div>
 
 ---
 
-## 📁 Estrutura dos Projetos
+## 📁 Project Structure
 
-Este repositório contém **4 projetos distintos** relacionados ao AugmentCode, cada um com propósitos específicos:
+This repository contains **4 distinct projects** related to AugmentCode, each with specific purposes:
 
-### 🛠️ 1. **augment-vip-toolkit** (Ferramenta VIP Completa)
-**Localização:** `augment-vip-toolkit/`
+### 🛠️ 1. **augment_vip_toolkit** (Complete VIP Toolkit)
+**Location:** `augment_vip_toolkit/`
 
-**Propósito:** Toolkit completo para usuários VIP do Augment, com funcionalidades avançadas de privacidade e segurança.
+**Purpose:** Complete toolkit for Augment VIP users, featuring advanced privacy and security features.
 
-**Principais Funcionalidades:**
-- 🧹 **Limpeza de Bancos de Dados VS Code** - Remove entradas relacionadas ao Augment
-- 🔐 **Modificação de IDs de Telemetria** - Gera IDs aleatórios para privacidade
-- 🌐 **Mascaramento de IP** - Proxy Tor local para anonimização
-- 🧽 **Limpeza de Rede** - Flush DNS e limpeza de caches
-- 🐍 **Baseado em Python** - Compatibilidade multiplataforma
-- 🔒 **Ambiente Virtual** - Isolamento de dependências
-- 💾 **Backups Automáticos** - Segurança antes das operações
+**Key Features:**
+- 🧹 **VS Code Database Cleaning** - Removes entries related to Augment
+- 🔐 **Telemetry ID Modification** - Generates random IDs for privacy
+- 🌐 **IP Masking** - Local Tor proxy for anonymization
+- 🧽 **Network Cleaning** - DNS flush and cache cleanup
+- 🐍 **Python-based** - Cross-platform compatibility
+- 🔒 **Virtual Environment** - Dependency isolation
+- 💾 **Automatic Backups** - Safety before operations
 
-**Ideal para:** Usuários avançados que precisam de controle total sobre privacidade e limpeza de dados.
-
----
-
-### 🖥️ 2. **augment-code-free-gui** (Interface Gráfica Moderna)
-**Localização:** `augment-code-free-gui/`
-
-**Propósito:** Interface gráfica moderna e intuitiva para limpeza de dados do AugmentCode.
-
-**Principais Funcionalidades:**
-- 🎨 **Interface GUI Moderna** - Aplicação desktop baseada em webview
-- 🔍 **Detecção Inteligente de IDE** - Detecta automaticamente IDEs instalados
-- 💙 **Suporte VSCode** - VSCode, VSCodium, Cursor, etc.
-- 🧠 **Suporte JetBrains** - IDEA, PyCharm, GoLand, etc.
-- 🛡️ **Recursos de Segurança** - Backups automáticos e logs detalhados
-- 🔄 **Adaptação Dinâmica** - Interface se adapta ao IDE selecionado
-
-**Ideal para:** Usuários que preferem interface gráfica e precisam de suporte para múltiplos IDEs.
+**Ideal for:** Advanced users requiring complete control over privacy and data cleaning.
 
 ---
 
-### ⚡ 3. **augment-code-free-cli** (Ferramenta CLI Simples)
-**Localização:** `augment-code-free-cli/`
+### 🖥️ 2. **augment_code_free_gui** (Modern GUI Interface)
+**Location:** `augment_code_free_gui/`
 
-**Propósito:** Ferramenta de linha de comando simples e eficiente para limpeza básica.
+**Purpose:** Modern and intuitive graphical interface for cleaning AugmentCode data.
 
-**Principais Funcionalidades:**
-- 🖥️ **Interface CLI** - Comandos simples e diretos
-- 🎮 **Interface GUI Opcional** - GUI moderna como alternativa
-- 🗄️ **Limpeza de Banco de Dados** - Remove entradas específicas do VS Code
-- 🔐 **Modificação de Telemetria** - Redefine IDs de telemetria
-- 🚀 **Processamento Automático** - Detecta e fecha instâncias do VS Code
-- 📊 **Feedback Detalhado** - Confirmações e status claros
+**Key Features:**
+- 🎨 **Modern GUI Interface** - Desktop application based on webview
+- 🔍 **Smart IDE Detection** - Automatically detects installed IDEs
+- 💙 **VSCode Support** - VSCode, VSCodium, Cursor, etc.
+- 🧠 **JetBrains Support** - IDEA, PyCharm, GoLand, etc.
+- 🛡️ **Security Features** - Automatic backups and detailed logs
+- 🔄 **Dynamic Adaptation** - Interface adapts to selected IDE
 
-**Ideal para:** Usuários que preferem linha de comando ou precisam automatizar operações.
-
----
-
-### 🎯 4. **cursor-augment-toolkit** (Especializado para Cursor)
-**Localização:** `cursor-augment-toolkit/`
-
-**Propósito:** Toolkit especializado para o editor Cursor, com funcionalidades específicas.
-
-**Principais Funcionalidades:**
-- 🎯 **Foco no Cursor** - Otimizado especificamente para o editor Cursor
-- 🧹 **Limpeza de Bancos de Dados** - Remove entradas relacionadas ao Augment
-- 🧩 **Gerenciamento de Extensões** - Remove extensões completamente
-- 🔐 **Privacidade Avançada** - Geração de IDs de telemetria aleatórios
-- 🌍 **Suporte Multiplataforma** - Windows, macOS e Linux
-- ⚡ **Instalação Rápida** - Scripts de instalação automatizados
-
-**Ideal para:** Usuários específicos do editor Cursor que precisam de ferramentas especializadas.
+**Ideal for:** Users preferring a graphical interface and requiring multi-IDE support.
 
 ---
 
-## 🔄 Comparação das Ferramentas
+### ⚡ 3. **augment_code_free_cli** (Simple CLI Tool)
+**Location:** `augment_code_free_cli/`
 
-| Característica | augment-vip-toolkit | augment-code-free-gui | augment-code-free-cli | cursor-augment-toolkit |
-|----------------|---------------------|----------------------|----------------------|----------------------|
-| **Interface** | CLI | GUI | CLI + GUI | CLI |
-| **Foco** | Privacidade Avançada | Multi-IDEs | Simplicidade | Cursor Específico |
-| **Mascaramento IP** | ✅ | ❌ | ❌ | ❌ |
-| **Suporte JetBrains** | ❌ | ✅ | ❌ | ❌ |
-| **Detecção Automática** | ❌ | ✅ | ❌ | ❌ |
-| **Gerenciamento Extensões** | ❌ | ❌ | ❌ | ✅ |
-| **Instalação Automática** | ✅ | ❌ | ❌ | ✅ |
-| **Complexidade** | Avançada | Média | Simples | Média |
+**Purpose:** Simple and efficient command-line tool for basic cleaning.
 
----
+**Key Features:**
+- 🖥️ **CLI Interface** - Simple and direct commands
+- 🎮 **Optional GUI Interface** - Modern GUI as an alternative
+- 🗄️ **Database Cleaning** - Removes specific VS Code entries
+- 🔐 **Telemetry Modification** - Resets telemetry IDs
+- 🚀 **Automatic Processing** - Detects and closes VS Code instances
+- 📊 **Detailed Feedback** - Clear confirmations and status updates
 
-## 🚀 Como Escolher a Ferramenta Certa
-
-### 🎯 **Para Usuários Iniciantes:**
-- **augment-code-free-gui** - Interface gráfica intuitiva e fácil de usar
-
-### 🔧 **Para Usuários Avançados:**
-- **augment-vip-toolkit** - Controle total e funcionalidades avançadas de privacidade
-
-### ⚡ **Para Automação:**
-- **augment-code-free-cli** - Comandos simples para scripts e automação
-
-### 🎨 **Para Usuários do Cursor:**
-- **cursor-augment-toolkit** - Ferramentas especializadas para o editor Cursor
+**Ideal for:** Users preferring the command line or needing to automate operations.
 
 ---
 
-## 📋 Requisitos Gerais
+### 🎯 4. **cursor_augment_toolkit** (Cursor Specialized)
+**Location:** `cursor_augment_toolkit/`
 
-- **Python 3.6+** em todos os projetos
-- **Sistema Operacional:** Windows, macOS ou Linux
-- **Permissões:** Acesso de administrador pode ser necessário para algumas operações
+**Purpose:** Toolkit specifically designed for the Cursor IDE environment.
 
----
+**Key Features:**
+- 🎯 **Cursor-specific** - Tailored for Cursor IDE nuances
+- 🧹 **Targeted Cleaning** - Focuses on Cursor-specific data
+- 🔐 **Privacy Enhancements** - Optimized for Cursor's architecture
+- 🚀 **Fast Execution** - Streamlined for Cursor users
+- 📋 **Detailed Reports** - Cursor-specific operation logs
 
-## ⚠️ Aviso Legal
-
-**Uso por Conta e Risco:** Todas as ferramentas são fornecidas apenas para fins educacionais e de pesquisa. O usuário assume total responsabilidade pelos riscos de uso.
-
-**Segurança de Dados:** Sempre faça backup de dados importantes antes de usar qualquer ferramenta.
-
-**Conformidade:** Observe os termos de uso do software relevante e as leis locais.
+**Ideal for:** Dedicated Cursor IDE users requiring specialized cleaning tools.
 
 ---
 
-## 📄 Licenças
+## ⚠️ Disclaimer
 
-Todos os projetos estão licenciados sob a **Licença MIT**. Consulte os arquivos `LICENSE` individuais em cada projeto para detalhes.
+This toolkit is intended for educational purposes and legitimate privacy management. Users are responsible for complying with all applicable terms of service and regulations when using these tools.
 
----
+## 📄 License
 
-## 🤝 Contribuição
-
-Cada projeto aceita contribuições individuais. Consulte os READMEs específicos de cada projeto para informações sobre como contribuir.
-
----
-
-<div align="center">
-
-**🌟 Escolha a ferramenta que melhor atende às suas necessidades!**
-
-</div> 
+MIT License - See LICENSE file for details.
